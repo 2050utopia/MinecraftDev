@@ -48,6 +48,11 @@ public class MixinCustomJavaDocTagProvider implements CustomJavadocTagProvider {
                 return MixinCustomJavaDocTagProvider.isValidInContext(element);
             }
 
+            @Override
+            public Object[] getPossibleValues(PsiElement context, PsiElement place, String prefix) {
+                return new Object[0];
+            }
+
             @Nullable
             @Override
             public String checkTagValue(PsiDocTagValue value) {
@@ -76,6 +81,11 @@ public class MixinCustomJavaDocTagProvider implements CustomJavadocTagProvider {
             @Override
             public boolean isValidInContext(PsiElement element) {
                 return MixinCustomJavaDocTagProvider.isValidInContext(element);
+            }
+
+            @Override
+            public Object[] getPossibleValues(PsiElement context, PsiElement place, String prefix) {
+                return new Object[0];
             }
 
             @Nullable

@@ -28,7 +28,7 @@ public class FindMixinsComponent {
     public FindMixinsComponent(@NotNull List<PsiClass> classes) {
         //noinspection unchecked
         classList.setModel(JBList.createDefaultListModel(classes.toArray()));
-        classList.setCellRenderer(PsiClassListCellRenderer.INSTANCE);
+        classList.setCellRenderer(new PsiClassListCellRenderer());
 
         classList.addMouseListener(new MouseAdapter() {
             @Override
