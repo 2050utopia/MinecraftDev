@@ -103,8 +103,11 @@ public class MinecraftModule {
                 final String[] paths = ModuleManager.getInstance(module.getProject()).getModuleGroupPath(module);
                 if (paths != null && paths.length > 0) {
                     final Module parentModule;
-                    try (final AccessToken ignored = ApplicationManager.getApplication().acquireReadActionLock()) {
+                    final AccessToken token = ApplicationManager.getApplication().acquireReadActionLock();
+                    try {
                         parentModule = ModuleManager.getInstance(module.getProject()).findModuleByName(paths[paths.length - 1]);
+                    } finally {
+                        token.finish();
                     }
                     if (parentModule != null) {
                         if (map.containsKey(parentModule)) {

@@ -93,7 +93,8 @@ public class FindMixinsAction extends AnAction {
                     public void run(@NotNull ProgressIndicator indicator) {
                         final Set<PsiClass> classes = new HashSet<>();
                         // Get permission
-                        try (final AccessToken ignored = ApplicationManager.getApplication().acquireReadActionLock()) {
+                        final AccessToken token = ApplicationManager.getApplication().acquireReadActionLock();
+                        try {
                             indicator.setIndeterminate(true);
 
                             final AllClassesSearchExecutor executor = new AllClassesSearchExecutor();
@@ -113,6 +114,8 @@ public class FindMixinsAction extends AnAction {
                                     return true;
                                 }
                             );
+                        } finally {
+                            token.finish();
                         }
 
                         ApplicationManager.getApplication().invokeLater(() -> {

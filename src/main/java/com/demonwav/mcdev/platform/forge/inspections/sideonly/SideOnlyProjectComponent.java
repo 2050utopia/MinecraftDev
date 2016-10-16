@@ -47,7 +47,8 @@ public class SideOnlyProjectComponent extends AbstractProjectComponent {
                 ProgressManager.getInstance().run(new Task.Backgroundable(myProject, "Indexing @SidedProxy", true, null) {
                     @Override
                     public void run(@NotNull ProgressIndicator indicator) {
-                        try (final AccessToken ignored = ApplicationManager.getApplication().acquireReadActionLock()) {
+                        final AccessToken token = ApplicationManager.getApplication().acquireReadActionLock();
+                        try {
                             indicator.setIndeterminate(true);
                             final JavaRecursiveElementWalkingVisitor visitor = new JavaRecursiveElementWalkingVisitor() {
                                 @Override
@@ -65,6 +66,8 @@ public class SideOnlyProjectComponent extends AbstractProjectComponent {
                                     return true;
                                 }
                             );
+                        } finally {
+                            token.finish();
                         }
                     }
                 });
